@@ -14,5 +14,14 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  server:
+    build: .
+    container_name: supermercado_server
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
 volumes:
   pgdata:
