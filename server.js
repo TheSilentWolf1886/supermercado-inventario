@@ -13,18 +13,27 @@ const ventaRoutes = require('./routes/ventas.routes');
 const detalleVentaRoutes = require('./routes/detalleVentas.routes');
 
 const app = express();
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocumentation = require('./swagger.json');
+
 
 // Middleware
 app.use(express.json());
 app.use(cors());
 
+//Swagger
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocumentation, { explorer: true }));
+
+
 // Usar rutas
+
 app.use('/models/productos', productoRoutes);
 app.use('/models/categorias', categoriaRoutes);
 app.use('/models/proveedores', proveedorRoutes);
 app.use('/models/clientes', clienteRoutes);
 app.use('/models/ventas', ventaRoutes);
 app.use('/models/detalle-ventas', detalleVentaRoutes);
+
 
 app.get('/', (req, res) => {
   res.send('API de Inventario del Supermercado');
