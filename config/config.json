@@ -1,0 +1,10 @@
+{
+  "development": {
+    "username": "admin",
+    "password": "admin",
+    "database": "supermercado_db",
+    "host": "localhost",
+    "port": 5434,
+    "dialect": "postgres"
+  }
+}
