@@ -28,7 +28,7 @@ app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/models/producto', productoRoutes);
 app.use('/models/categoria', categoriaRoutes);
-app.use('/models/proveedore', proveedorRoutes);
+app.use('/models/proveedor', proveedorRoutes);
 app.use('/models/cliente', clienteRoutes);
 app.use('/models/venta', ventaRoutes);
 app.use('/models/detalleventa', detalleVentaRoutes);
