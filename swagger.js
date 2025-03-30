@@ -16,11 +16,8 @@ const options = {
       },
     ],
   },
-<<<<<<< HEAD
-  apis: ['./routes/clientes.routes.js'],
-=======
+
   apis: ['./routes/clientes.routes.js','./routes/categorias.routes.js'],
->>>>>>> 224a1a4 (Creacion de los endopoints para la tabla de categorias)
 };
 
 const swaggerSpec = swaggerJsdoc(options);
