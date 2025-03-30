@@ -1,7 +1,7 @@
 const { Categoria } = require('../models');
 
 exports.getCategorias = async (req, res) => {
-  const { nombre } = req.body;
+  
   try {
     const categorias = await Categoria.findAll();
     res.json(categorias);
@@ -11,7 +11,7 @@ exports.getCategorias = async (req, res) => {
 };
 
 exports.getCategoriaById = async (req, res) => {
-  const { id } = req.body;
+  
   try {
     const categoria = await Categoria.findByPk(req.params.id);
     if (!categoria) return res.status(404).json({ error: 'Categoría no encontrada' });
@@ -22,7 +22,7 @@ exports.getCategoriaById = async (req, res) => {
 };
 
 exports.createCategoria = async (req, res) => {
-  const { nombre } = req.body;
+  
   try {
     const { nombre } = req.body;
     const nuevaCategoria = await Categoria.create({ nombre });
@@ -33,7 +33,7 @@ exports.createCategoria = async (req, res) => {
 };
 
 exports.updateCategoria = async (req, res) => {
-  const { id } = req.body;
+  
   try {
     const { nombre } = req.body;
     const categoria = await Categoria.findByPk(req.params.id);
@@ -47,7 +47,7 @@ exports.updateCategoria = async (req, res) => {
 };
 
 exports.deleteCategoria = async (req, res) => {
-  const { id } = req.body;
+  
   try {
     const categoria = await Categoria.findByPk(req.params.id);
     if (!categoria) return res.status(404).json({ error: 'Categoría no encontrada' });

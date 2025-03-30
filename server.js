@@ -1,5 +1,7 @@
 require('dotenv').config();
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec= require('./swagger.js');
 const cors = require('cors');
 const sequelize = require('./config/database');
 const db = require('./models');
@@ -13,26 +15,23 @@ const ventaRoutes = require('./routes/ventas.routes');
 const detalleVentaRoutes = require('./routes/detalleVentas.routes');
 
 const app = express();
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocumentation = require('./swagger.json');
-
 
 // Middleware
 app.use(express.json());
 app.use(cors());
 
 //Swagger
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocumentation, { explorer: true }));
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
 // Usar rutas
 
-app.use('/models/productos', productoRoutes);
-app.use('/models/categorias', categoriaRoutes);
-app.use('/models/proveedores', proveedorRoutes);
-app.use('/models/clientes', clienteRoutes);
-app.use('/models/ventas', ventaRoutes);
-app.use('/models/detalle-ventas', detalleVentaRoutes);
+app.use('/models/producto', productoRoutes);
+app.use('/models/categoria', categoriaRoutes);
+app.use('/models/proveedore', proveedorRoutes);
+app.use('/models/cliente', clienteRoutes);
+app.use('/models/venta', ventaRoutes);
+app.use('/models/detalleventa', detalleVentaRoutes);
 
 
 app.get('/', (req, res) => {

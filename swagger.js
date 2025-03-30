@@ -1,14 +1,23 @@
-import swaggerAutogen from 'swagger-autogen';
-const outputFile='./swagger.json';
-const endpointsFiles = ['./routes/*.routes.js'];
+const swaggerJsdoc = require('swagger-jsdoc');
 
-const doc = {
-  info: {
-    title: 'Supermercado API',
-    description: 'API para gestionar el inventario del supermercado',
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Supermercado API',
+      version: '1.0.0',
+      description: 'API para gestionar el inventario del supermercado',
+    },
+    servers: [
+      {
+        url: 'http://localhost:3000',
+        description: 'Servidor local',
+      },
+    ],
   },
-  host: 'localhost:3000',
-  schemes: ['http'],
+  apis: ['./routes/clientes.routes.js'],
 };
 
-swaggerAutogen(outputFile, endpointsFiles, doc);
+const swaggerSpec = swaggerJsdoc(options);
+module.exports = swaggerSpec;
