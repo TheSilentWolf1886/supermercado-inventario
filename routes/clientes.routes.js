@@ -56,7 +56,7 @@ router.get('/', clienteController.getClientes);
  * /models/cliente/{id}:
  *   get:
  *     summary: Obtener un cliente por ID
- *     tags: [cliente]
+ *     tags: [Cliente]
  *     parameters:
  *       - in: path
  *         name: id
@@ -82,7 +82,7 @@ router.get('/:id', clienteController.getClienteById);
  * /models/cliente:
  *   post:
  *     summary: Crear un nuevo cliente
- *     tags: [cliente]
+ *     tags: [Cliente]
  *     requestBody:
  *       required: true
  *       content:
@@ -103,7 +103,7 @@ router.post('/', clienteController.createCliente);
  * /models/cliente/{id}:
  *   put:
  *     summary: Actualizar un cliente por ID
- *     tags: [cliente]
+ *     tags: [Cliente]
  *     parameters:
  *       - in: path
  *         name: id
@@ -131,7 +131,7 @@ router.put('/:id', clienteController.updateCliente);
  * /models/cliente/{id}:
  *   delete:
  *     summary: Eliminar un cliente por ID
- *     tags: [cliente]
+ *     tags: [Cliente]
  *     parameters:
  *       - in: path
  *         name: id
