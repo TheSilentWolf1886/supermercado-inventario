@@ -75,29 +75,6 @@ router.get('/', clienteController.getClientes);
  *         description: Cliente no encontrado
  */
 
-/**
- * @swagger
- * /models/cliente/{id}:
- *   get:
- *     summary: Obtener un cliente por ID
- *     tags: [cliente]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: integer
- *         required: true
- *         description: ID del cliente
- *     responses:
- *       200:
- *         description: Cliente encontrado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Cliente'
- *       404:
- *         description: Cliente no encontrado
- */
 router.get('/:id', clienteController.getClienteById);
 
 /**
@@ -119,24 +96,6 @@ router.get('/:id', clienteController.getClienteById);
  *         description: Datos inválidos
  */
 
-/**
- * @swagger
- * /models/cliente:
- *   post:
- *     summary: Crear un nuevo cliente
- *     tags: [cliente]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Cliente'
- *     responses:
- *       201:
- *         description: Cliente creado
- *       400:
- *         description: Datos inválidos
- */
 router.post('/', clienteController.createCliente);
 
 /**
@@ -165,31 +124,6 @@ router.post('/', clienteController.createCliente);
  *         description: Cliente no encontrado
  */
 
-/**
- * @swagger
- * /models/cliente/{id}:
- *   put:
- *     summary: Actualizar un cliente por ID
- *     tags: [cliente]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: integer
- *         required: true
- *         description: ID del cliente a actualizar
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Cliente'
- *     responses:
- *       200:
- *         description: Cliente actualizado correctamente
- *       404:
- *         description: Cliente no encontrado
- */
 router.put('/:id', clienteController.updateCliente);
 
 /**
@@ -212,25 +146,6 @@ router.put('/:id', clienteController.updateCliente);
  *         description: Cliente no encontrado
  */
 
-/**
- * @swagger
- * /models/cliente/{id}:
- *   delete:
- *     summary: Eliminar un cliente por ID
- *     tags: [cliente]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: integer
- *         required: true
- *         description: ID del cliente a eliminar
- *     responses:
- *       200:
- *         description: Cliente eliminado correctamente
- *       404:
- *         description: Cliente no encontrado
- */
 router.delete('/:id', clienteController.deleteCliente);
 
 module.exports = router;
