@@ -25,6 +25,8 @@ Para detener el servidor y la base de datos se ejecuta el siguiente comando:
 docker compose down
 ```
 
+## Validar despliegue del servidor
+
 Por defecto el servidor se ejecuta en `http://localhost:3000`, para verificar que el servidor se encuentre funcionando de manera adecuada puede hacer una petición usando curl:
 ```bash
 curl http://localhost:3000
