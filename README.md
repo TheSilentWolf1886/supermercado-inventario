@@ -25,10 +25,18 @@ Para detener el servidor y la base de datos se ejecuta el siguiente comando:
 docker compose down
 ```
 
-Por defecto el servidor se ejecuta en `http://localhost:3000`
+Por defecto el servidor se ejecuta en `http://localhost:3000`, para verificar que el servidor se encuentre funcionando de manera adecuada puede hacer una petición usando curl:
+```bash
+curl http://localhost:3000
+```
+
+Esto debería retornar:
+```
+API de Inventario del Supermercado
+```
 
 ## Endpoints
-La documentación se puede acceder de manera interactiva en `http://localhost:3000/doc` una vez se haya levantado el servidor.
+La documentación se puede acceder de manera interactiva en `http://localhost:3000/doc` luego de iniciar el servidor.
 
 ![Captura de la pagina de documentación](./assets/documentacion.png)
 
