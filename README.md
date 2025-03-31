@@ -5,9 +5,11 @@
 - Eliana Jackeline Zambrano Cardenas
 
 ## Acerca de
-Este repositorio contiene el backend junto con los archivos necesarios para contenerizar y desplegar tanto el servidor de nodejs como la base de datos PostgreSQL utilizando docker compose
+Este repositorio contiene el backend junto con los archivos necesarios para contenerizar y desplegar tanto el servidor de nodejs como la base de datos PostgreSQL utilizando docker compose.
 
-## Despliegue
+En el servidor de node se encuentran los puntos de API para administrar el inventario de un supermercado.
+
+## Desplegar servidor
 Para desplegar este proyecto es necesario contar con docker y docker compose, mas información sobre como instalarlo [aquí](https://docs.docker.com/engine/install/)
 
 Se levantan los contenedores utilizando el siguiente comando:
@@ -37,7 +39,7 @@ Esto debería retornar:
 API de Inventario del Supermercado
 ```
 
-## Endpoints
+## Documentación de los endpoints
 La documentación se puede acceder de manera interactiva en `http://localhost:3000/doc` luego de iniciar el servidor.
 
 ![Captura de la pagina de documentación](./assets/documentacion.png)
