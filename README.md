@@ -15,13 +15,20 @@ Se levantan los contenedores utilizando el siguiente comando:
 docker compose up -d
 ```
 
-En caso de que se haga un cambio al servidor es necesario reconstruir el contenedor, por lo cual se añade la siguiente bandera al comando
+En caso de que se haga un cambio al servidor es necesario reconstruir el contenedor, por lo cual se añade la siguiente bandera al comando:
 ```bash
 docker compose up --build -d
 ```
 
-Para detener el servidor y la base de datos se ejecuta el siguiente comando
+Para detener el servidor y la base de datos se ejecuta el siguiente comando:
 ```bash
 docker compose down
 ```
+
+Por defecto el servidor se ejecuta en `http://localhost:3000`
+
+## Endpoints
+La documentación se puede acceder de manera interactiva en `http://localhost:3000/doc` una vez se haya levantado el servidor.
+
+![Captura de la pagina de documentación](./assets/documentacion.png)
 
