@@ -7,7 +7,9 @@
 ## Acerca de
 Este repositorio contiene el backend junto con los archivos necesarios para contenerizar y desplegar tanto el servidor de nodejs como la base de datos PostgreSQL utilizando docker compose.
 
-En el servidor de node se encuentran los puntos de API para administrar el inventario de un supermercado.
+En el servidor de NodeJS se encuentran los puntos de API para administrar el inventario de un supermercado (La información de las rutas especificas se encuentra en la sección "Documentación de los endpoints").
+
+En el servidor de PostgreSQL se cuenta con las tablas Categoria, Clientes, DetalleVenta, Productos, Proveedors y Venta.
 
 ## Desplegar servidor
 Para desplegar este proyecto es necesario contar con docker y docker compose, mas información sobre como instalarlo [aquí](https://docs.docker.com/engine/install/)
