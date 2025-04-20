@@ -3,8 +3,8 @@
     "username": "admin",
     "password": "admin",
     "database": "supermercado_db",
-    "host": "db",
-    "port": 5432,
+    "host": "localhost",
+    "port": 5434,
     "dialect": "postgres"
   }
 }

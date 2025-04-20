@@ -48,6 +48,7 @@ services:
 
   server:
     build: .
+    network_mode: host
     container_name: supermercado_server
     restart: always
     ports:
