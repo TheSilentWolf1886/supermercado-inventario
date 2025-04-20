@@ -46,12 +46,12 @@ async function configurarOIDC() {
     const token = auth.slice(7);
 
     try {
-      // Introspect the token
+      // Analizar token
       const introspection = await client.tokenIntrospection(oidcConfig, token);
       if (!introspection.active) {
         throw new Error("El token no está activo");
       }
-      req.user = introspection; // contains all the token’s claims
+      req.user = introspection;
       next();
     } catch (err) {
       console.error("Error en la validación del token:", err.message);
