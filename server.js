@@ -51,7 +51,7 @@ async function configurarOIDC() {
       if (!introspection.active) {
         throw new Error("El token no está activo");
       }
-      req.user = introspection;
+      req.user = introspection; // Pasar info del token por si se quiere usar luego
       next();
     } catch (err) {
       console.error("Error en la validación del token:", err.message);
