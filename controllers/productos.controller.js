@@ -21,8 +21,8 @@ exports.getProductoById = async (req, res) => {
 
 exports.createProducto = async (req, res) => {
   try {
-    const { nombre, descripcion, precio, cantidad, categoria_id } = req.body;
-    const nuevoProducto = await Producto.create({ nombre, descripcion, precio, cantidad, categoria_id });
+    const { nombre, descripcion, precio, stock, categoria_id } = req.body;
+    const nuevoProducto = await Producto.create({ nombre, descripcion, precio, stock, categoria_id });
     res.status(201).json(nuevoProducto);
   } catch (error) {
     res.status(500).json({ error: 'Error al crear producto' });
@@ -31,11 +31,11 @@ exports.createProducto = async (req, res) => {
 
 exports.updateProducto = async (req, res) => {
   try {
-    const { nombre, descripcion, precio, cantidad, categoria_id } = req.body;
+    const { nombre, descripcion, precio, stock, categoria_id } = req.body;
     const producto = await Producto.findByPk(req.params.id);
     if (!producto) return res.status(404).json({ error: 'Producto no encontrado' });
 
-    await producto.update({ nombre, descripcion, precio, cantidad, categoria_id });
+    await producto.update({ nombre, descripcion, precio, stock, categoria_id });
     res.json(producto);
   } catch (error) {
     res.status(500).json({ error: 'Error al actualizar producto' });

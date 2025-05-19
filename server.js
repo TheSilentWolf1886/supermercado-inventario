@@ -59,7 +59,10 @@ async function configurarOIDC() {
     }
   }
 
+  app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
   // Proteger estas rutas
+  app.get('/models/*', autenticarBearer)
   app.post('/models/*', autenticarBearer)
   app.put('/models/*', autenticarBearer)
   app.delete('/models/*', autenticarBearer)
