@@ -79,6 +79,26 @@ async function configurarOIDC() {
     res.send('API de Inventario del Supermercado');
   });
 
+  app.get('/repo', (req, res) => {
+    // you will need to install via 'npm install jsonwebtoken' or in your package.json
+
+    const jwt = require("jsonwebtoken");
+
+    const METABASE_SITE_URL = "http://localhost:6969";
+    const METABASE_SECRET_KEY = "513d8db7736c6762cffdf50fd6c0111402607f93d2a1802227b0a1a16d4fa56a";
+
+    const payload = {
+      resource: { dashboard: 2 },
+      params: {},
+      exp: Math.round(Date.now() / 1000) + (10 * 60) // 10 minute expiration
+    };
+    const token = jwt.sign(payload, METABASE_SECRET_KEY);
+
+    const iframeUrl = METABASE_SITE_URL + "/embed/dashboard/" + token +
+      "#bordered=true&titled=true";
+    res.send(iframeUrl)
+  })
+
   db.sequelize.sync()
     .then(() => console.log('✅ Base de datos sincronizada con Sequelize'))
     .catch((error) => console.error('❌ Error al sincronizar DB:', error));
