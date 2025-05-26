@@ -38,6 +38,7 @@ services:
       - "8080:8080"
     volumes:
       - ./keycloak-realm-config:/opt/keycloak/data/import/
+      - ./keycloak-personalizado:/opt/keycloak/themes
     depends_on:
       db:
         condition: service_healthy
