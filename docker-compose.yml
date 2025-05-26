@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:17
+    image: postgres:17 
     container_name: supermercado_db
     restart: always
     environment:
@@ -12,7 +12,6 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./postgres-init:/docker-entrypoint-initdb.d
-
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U admin -d supermercado_db"]
       interval: 10s
@@ -20,42 +19,71 @@ services:
       retries: 5
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.2.0
+    image: quay.io/keycloak/keycloak:26.2.0 
     container_name: supermercado_keycloak
     restart: always
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-
       KC_HTTP_ENABLED: "true"
-      KC_HOSTNAME: localhost
-
+      KC_HOSTNAME: localhost 
       KC_DB: postgres
       KC_DB_URL_HOST: db
       KC_DB_URL_PORT: 5432
-      KC_DB_DATABASE: keycloak
+      KC_DB_DATABASE: keycloak 
       KC_DB_USERNAME: admin
       KC_DB_PASSWORD: admin
       KC_DB_SCHEMA: public
     ports:
-      - "8080:8080" 
+      - "8080:8080"
     volumes:
       - ./keycloak-realm-config:/opt/keycloak/data/import/
     depends_on:
       db:
         condition: service_healthy
-    command: start
+    command: start 
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready || exit 1"]
+      interval: 30s       
+      timeout: 10s
+      retries: 5
+      start_period: 60s   
+
+  metabase:
+    image: metabase/metabase:latest
+    container_name: supermercado_metabase
+    hostname: metabase
+    restart: always
+    volumes:
+      - /dev/urandom:/dev/random:ro
+    ports:
+      - "3001:3000"
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: metabase
+      MB_DB_PORT: 5432
+      MB_DB_USER: admin
+      MB_DB_PASS: admin
+      MB_DB_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail -I http://localhost:3000/api/health || exit 1"] 
+      interval: 15s
+      timeout: 5s
+      retries: 5
 
   server:
     build: .
     network_mode: host
     container_name: supermercado_server
     restart: always
-    ports:
-      - "3000:3000"
     depends_on:
-      - db
-      - keycloak
+      db:
+        condition: service_healthy
+      #keycloak:
+      #  condition: service_healthy 
 
 volumes:
   pgdata:
