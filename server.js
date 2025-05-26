@@ -1,18 +1,18 @@
-require('dotenv').config();
-const express = require('express');
-const swaggerUi = require('swagger-ui-express');
-const swaggerSpec = require('./swagger.js');
-const cors = require('cors');
-const sequelize = require('./config/database');
-const db = require('./models');
+require("dotenv").config();
+const express = require("express");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./swagger.js");
+const cors = require("cors");
+const sequelize = require("./config/database");
+const db = require("./models");
 
 // Importar rutas
-const productoRoutes = require('./routes/productos.routes');
-const categoriaRoutes = require('./routes/categorias.routes');
-const proveedorRoutes = require('./routes/proveedores.routes');
-const clienteRoutes = require('./routes/clientes.routes');
-const ventaRoutes = require('./routes/ventas.routes');
-const detalleVentaRoutes = require('./routes/detalleVentas.routes');
+const productoRoutes = require("./routes/productos.routes");
+const categoriaRoutes = require("./routes/categorias.routes");
+const proveedorRoutes = require("./routes/proveedores.routes");
+const clienteRoutes = require("./routes/clientes.routes");
+const ventaRoutes = require("./routes/ventas.routes");
+const detalleVentaRoutes = require("./routes/detalleVentas.routes");
 
 const app = express();
 
@@ -22,7 +22,6 @@ app.use(cors());
 
 //Swagger
 // app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
 
 let oidcConfig;
 
@@ -59,56 +58,58 @@ async function configurarOIDC() {
     }
   }
 
-  app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
   // Proteger estas rutas
-  app.get('/models/*', autenticarBearer)
-  app.post('/models/*', autenticarBearer)
-  app.put('/models/*', autenticarBearer)
-  app.delete('/models/*', autenticarBearer)
+  app.get("/models/*", autenticarBearer);
+  app.post("/models/*", autenticarBearer);
+  app.put("/models/*", autenticarBearer);
+  app.delete("/models/*", autenticarBearer);
+  //app.get("/panel", autenticarBearer);
 
-  app.use('/models/producto', productoRoutes);
-  app.use('/models/categoria', categoriaRoutes);
-  app.use('/models/proveedor', proveedorRoutes);
-  app.use('/models/cliente', clienteRoutes);
-  app.use('/models/venta', ventaRoutes);
-  app.use('/models/detalleventa', detalleVentaRoutes);
+  app.use("/models/producto", productoRoutes);
+  app.use("/models/categoria", categoriaRoutes);
+  app.use("/models/proveedor", proveedorRoutes);
+  app.use("/models/cliente", clienteRoutes);
+  app.use("/models/venta", ventaRoutes);
+  app.use("/models/detalleventa", detalleVentaRoutes);
 
-
-  app.get('/', (req, res) => {
-    res.send('API de Inventario del Supermercado');
+  app.get("/", (req, res) => {
+    res.send("API de Inventario del Supermercado");
   });
 
-  app.get('/repo', (req, res) => {
-    // you will need to install via 'npm install jsonwebtoken' or in your package.json
-
+  app.get("/panel", (req, res) => {
     const jwt = require("jsonwebtoken");
 
-    const METABASE_SITE_URL = "http://localhost:6969";
-    const METABASE_SECRET_KEY = "513d8db7736c6762cffdf50fd6c0111402607f93d2a1802227b0a1a16d4fa56a";
+    const METABASE_SITE_URL = "http://localhost:3001";
+    const METABASE_SECRET_KEY =
+      "3c55e31a03e0983eae9381c5bb634a74e51f0298c5b353591f04f44d425c7f51";
 
     const payload = {
       resource: { dashboard: 2 },
       params: {},
-      exp: Math.round(Date.now() / 1000) + (10 * 60) // 10 minute expiration
+      exp: Math.round(Date.now() / 1000) + 10 * 60, // 10 minute expiration
     };
     const token = jwt.sign(payload, METABASE_SECRET_KEY);
 
-    const iframeUrl = METABASE_SITE_URL + "/embed/dashboard/" + token +
-      "#bordered=true&titled=true";
-    res.send(iframeUrl)
-  })
+    const iframeUrl = METABASE_SITE_URL + "/embed/dashboard/" + token;
+    res.send(iframeUrl);
+  });
 
-  db.sequelize.sync()
-    .then(() => console.log('✅ Base de datos sincronizada con Sequelize'))
-    .catch((error) => console.error('❌ Error al sincronizar DB:', error));
+  db.sequelize
+    .sync()
+    .then(() => console.log("✅ Base de datos sincronizada con Sequelize"))
+    .catch((error) => console.error("❌ Error al sincronizar DB:", error));
 
-  sequelize.authenticate()
-    .then(() => console.log('✅ Conexión a PostgreSQL exitosa'))
-    .catch(err => console.error('❌ Error de conexión:', err));
+  sequelize
+    .authenticate()
+    .then(() => console.log("✅ Conexión a PostgreSQL exitosa"))
+    .catch((err) => console.error("❌ Error de conexión:", err));
 
   const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`));
+  app.listen(PORT, () =>
+    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`)
+  );
 }
 
 // Usar rutas
