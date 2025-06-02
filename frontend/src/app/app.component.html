@@ -1,0 +1,19 @@
+<div class="navbar bg-base-100 shadow-sm">
+  <div class="flex-1">
+    <a class="btn btn-ghost text-xl" [routerLink]="''">La Guaca</a>
+  </div>
+  <div
+    *ngIf="isAuthenticated(); else loginBlock"
+    class="flex gap-4 items-center"
+  >
+    <div>{{ userData().email }}</div>
+    <button class="btn btn-outline btn-error" (click)="logout()">
+      Cerrar Sesión
+    </button>
+  </div>
+  <ng-template #loginBlock>
+    <button class="btn btn-primary" (click)="login()">Iniciar Sesión</button>
+  </ng-template>
+</div>
+
+<router-outlet></router-outlet>
