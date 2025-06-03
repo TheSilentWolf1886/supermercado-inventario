@@ -5,7 +5,7 @@ import { AuthStateService } from './services/auth-state.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, RouterLink],
+  imports: [RouterOutlet, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -23,4 +23,5 @@ export class AppComponent {
   logout() {
     this.auth.logout();
   }
+  
 }
