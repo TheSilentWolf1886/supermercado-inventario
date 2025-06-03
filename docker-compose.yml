@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:17 
+    image: postgres:17
     container_name: supermercado_db
     restart: always
     environment:
@@ -17,38 +17,46 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 10s 
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.2.0 
+    image: quay.io/keycloak/keycloak:26.2.0
     container_name: supermercado_keycloak
     restart: always
     environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_HTTP_ENABLED: "true"
+      
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      
       KC_HOSTNAME: localhost 
       KC_DB: postgres
       KC_DB_URL_HOST: db
       KC_DB_URL_PORT: 5432
-      KC_DB_DATABASE: keycloak 
+      KC_DB_DATABASE: keycloak
       KC_DB_USERNAME: admin
       KC_DB_PASSWORD: admin
       KC_DB_SCHEMA: public
+      KC_HTTP_ENABLED: "true"
+      KC_FEATURES: scripts,impersonation
+      
+      
     ports:
       - "8080:8080"
     volumes:
+      
       - ./keycloak-realm-config:/opt/keycloak/data/import/
       - ./keycloak-personalizado:/opt/keycloak/themes
     depends_on:
       db:
-        condition: service_healthy
-    command: start 
+        condition: service_healthy                   
+                    
+    command: ["start", "--import-realm"]
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready || exit 1"]
-      interval: 30s       
+      interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 60s   
+      start_period: 30s 
 
   metabase:
     image: metabase/metabase:latest
@@ -56,7 +64,7 @@ services:
     hostname: metabase
     restart: always
     volumes:
-      - /dev/urandom:/dev/random:ro
+      - /dev/urandom:/dev/random:ro 
     ports:
       - "3001:3000"
     environment:
@@ -65,26 +73,41 @@ services:
       MB_DB_PORT: 5432
       MB_DB_USER: admin
       MB_DB_PASS: admin
-      MB_DB_HOST: db
+      MB_DB_HOST: db   
+      
     depends_on:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl --fail -I http://localhost:3000/api/health || exit 1"] 
+      test: ["CMD-SHELL", "curl --fail -I http://localhost:3000/api/health || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 5
+      start_period: 30s 
 
   server:
-    build: .
+    build: . 
     network_mode: host
     container_name: supermercado_server
     restart: always
     depends_on:
       db:
         condition: service_healthy
-      #keycloak:
-      #  condition: service_healthy 
+      
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: supermercado_frontend
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./frontend/src:/app/src
+      
+    restart: always
+    depends_on: 
+      - server
 
 volumes:
   pgdata:

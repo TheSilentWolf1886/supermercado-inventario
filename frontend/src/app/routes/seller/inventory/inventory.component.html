@@ -1,0 +1,259 @@
+<h1 class="text-3xl">Gestión de inventario</h1>
+<div class="divider"></div>
+
+<div class="my-4 space-y-2">
+  <div
+    *ngIf="isLoadingProducts() || isLoadingCategories()"
+    class="alert alert-info shadow-lg"
+  >
+    <div>
+      <span class="loading loading-spinner"></span>
+      <span>
+        <ng-container *ngIf="isLoadingProducts()"
+          >Cargando productos...
+        </ng-container>
+        <ng-container *ngIf="isLoadingCategories()"
+          >Cargando categorías...</ng-container
+        >
+      </span>
+    </div>
+  </div>
+
+  <div *ngIf="isDeleting()" class="alert alert-warning shadow-lg">
+    <div>
+      <span class="loading loading-spinner text-warning"></span>
+      <span>Eliminando producto...</span>
+    </div>
+  </div>
+
+  <div
+    *ngIf="errorMessage() && !(isLoadingProducts() || isLoadingCategories())"
+    class="alert alert-error shadow-lg"
+  >
+    <div>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="stroke-current shrink-0 h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 14l2-2m0 0l2-2m-2 2l-2 2m2-2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <span>Error: {{ errorMessage() }}</span>
+    </div>
+  </div>
+
+  <div
+    *ngIf="
+      categoriesErrorMessage() && !errorMessage() && !isLoadingCategories()
+    "
+    class="alert alert-warning shadow-lg"
+  >
+    <div>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="stroke-current shrink-0 h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4C-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+        ></path>
+      </svg>
+      <span>Atención con categorías: {{ categoriesErrorMessage() }}</span>
+    </div>
+  </div>
+
+  <div *ngIf="successMessage()" class="alert alert-success shadow-lg">
+    <div>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="stroke-current shrink-0 h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <span>{{ successMessage() }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="flex flex-col gap-4">
+  <div class="flex items-end justify-stretch gap-4">
+    <div class="flex flex-col gap-1 w-full">
+      <div>Buscar (nombre, descripción, categoría)</div>
+      <label class="input input-bordered flex items-center gap-2 w-full">
+        <svg
+          class="h-[1em] opacity-50"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+        >
+          <g
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            stroke-width="2.5"
+            fill="none"
+            stroke="currentColor"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </g>
+        </svg>
+        <input
+          type="text"
+          class="grow text-base w-full"
+          placeholder="Filtrar productos..."
+          [(ngModel)]="searchText"
+        />
+      </label>
+    </div>
+    <a
+      [routerLink]="'/seller/inventory/create-product'"
+      class="btn btn-success"
+    >
+      Añadir nuevo producto
+    </a>
+  </div>
+
+  <div
+    class="overflow-x-auto"
+    *ngIf="
+      productsWithCategories$ | async as products;
+      else noDataOrLoadingState
+    "
+  >
+    <div *ngIf="products.length > 0; else noProductsFoundState">
+      <h2 class="text-2xl">Lista de productos</h2>
+      <div class="divider my-2"></div>
+      <table class="table table-zebra w-full">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Categoría</th>
+
+            <th>Precio</th>
+            <th>Stock</th>
+            <th class="w-auto text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products" class="hover:bg-base-300">
+            <th>{{ product.id }}</th>
+            <td>{{ product.nombre }}</td>
+            <td>
+              {{ product.descripcion | slice : 0 : 50
+              }}{{ product.descripcion.length > 50 ? "..." : "" }}
+            </td>
+            <td>{{ product.categoria_nombre || "N/A" }}</td>
+
+            <td>
+              {{ product.precio | currency : "S/ " : "symbol" : "1.2-2" }}
+            </td>
+            <td
+              [class.text-error]="product.stock < 5"
+              [class.font-bold]="product.stock < 5"
+            >
+              {{ product.stock }}
+            </td>
+            <td class="text-right">
+              <div class="flex gap-2 justify-end">
+                <a
+                  [routerLink]="['/seller/inventory/edit-product', product.id]"
+                  class="btn btn-sm btn-warning"
+                  >Editar</a
+                >
+                <button
+                  class="btn btn-sm btn-error"
+                  (click)="
+                    openDeleteConfirmation(product.id || 0, product.nombre)
+                  "
+                  [disabled]="isDeleting()"
+                >
+                  <span
+                    *ngIf="isDeleting()"
+                    class="loading loading-spinner loading-xs"
+                  ></span>
+                  <span *ngIf="!isDeleting()">Eliminar</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #noProductsFoundState>
+      <div
+        *ngIf="!(isLoadingProducts() || isLoadingCategories())"
+        class="text-center py-8"
+      >
+        <p class="text-xl" *ngIf="searchText() && products.length === 0">
+          No se encontraron productos que coincidan con "{{ searchText() }}".
+        </p>
+        <p
+          class="text-xl"
+          *ngIf="
+            !searchText() &&
+            products.length === 0 &&
+            !errorMessage() &&
+            !categoriesErrorMessage()
+          "
+        >
+          No hay productos para mostrar.
+        </p>
+      </div>
+    </ng-template>
+  </div>
+
+  <ng-template #noDataOrLoadingState>
+    <div
+      *ngIf="
+        !(isLoadingProducts() || isLoadingCategories()) &&
+        (errorMessage() || categoriesErrorMessage())
+      "
+      class="text-center py-8"
+    >
+      <p class="text-xl" *ngIf="!searchText()">
+        No hay datos disponibles para mostrar.
+      </p>
+    </div>
+    <div
+      *ngIf="
+        !(isLoadingProducts() || isLoadingCategories()) &&
+        !errorMessage() &&
+        !categoriesErrorMessage() &&
+        !searchText()
+      "
+      class="text-center py-8"
+    >
+      <p class="text-xl">No hay productos para mostrar en este momento.</p>
+      <p class="mt-2">
+        Puedes
+        <a
+          [routerLink]="'/seller/inventory/create-product'"
+          class="link link-primary"
+          >crear un nuevo producto</a
+        >.
+      </p>
+    </div>
+  </ng-template>
+</div>
+
+<app-confirmation-dialog
+  (confirmed)="handleDeleteConfirmation($event)"
+></app-confirmation-dialog>
