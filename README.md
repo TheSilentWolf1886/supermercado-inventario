@@ -38,7 +38,7 @@ docker compose down
 
 ### Configurar keycloak
 
-Para configurar keycloak solo hace falta añadir un usuario, para ello diríjase a `http://localhost:8080/admin/master/console/#/supermercado/users`, las credenciales por defecto son usuario `admin` y contraseña `admin`.
+Para configurar keycloak solo hace falta añadir un usuario, para ello diríjase a `http://localhost:8080/admin/master/console/#/supermercado/users`, las credenciales por defecto son usuario `admin` y contraseña `admin`, no olvide configurar las credenciales del usuario que acaba de crear.
 
 ## Validar despliegue del servidor backend
 
